@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useI18n } from "@/context/i18n";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,17 +12,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Chat() {
+  const { t, lang } = useI18n();
   const [messages, setMessages] = useState<
     { id: number; role: "user" | "bot"; text: string }[]
   >([
     {
       id: 1,
       role: "bot",
-      text: "नमस्ते! I'm Internमित्र. Tell me your interests and location, I'll find internships for you.",
+      text: t("chat.welcome"),
     },
   ]);
   const [input, setInput] = useState("");
+  const [isListening, setIsListening] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const send = () => {
     const text = input.trim();
@@ -34,15 +38,74 @@ export default function Chat() {
         {
           id: Date.now() + 1,
           role: "bot",
-          text: `Searching internships for: ${text}`,
+          text: `${t("chat.searching")} ${text}`,
         },
       ]);
     }, 600);
   };
 
+  const toggleSpeechRecognition = () => {
+    if (isListening) {
+      stopSpeechRecognition();
+    } else {
+      startSpeechRecognition();
+    }
+  };
+
+  const startSpeechRecognition = () => {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      const recognition = recognitionRef.current;
+      
+      // Set language based on current app language
+      recognition.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognition.start();
+    } else {
+      alert(t('chat.speechNotSupported'));
+    }
+  };
+  
+  const stopSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  
+  // Clean up speech recognition on component unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-intern-bg flex flex-col">
@@ -129,11 +192,21 @@ export default function Chat() {
                 placeholder="Type your answer here…"
                 className="flex-1 h-11 border-0 focus-visible:ring-0"
               />
-              <button onClick={send} aria-label="Send voice" className="text-intern-dark/70 hover:text-intern-dark">
+              <button 
+                onClick={toggleSpeechRecognition} 
+                aria-label="Voice input" 
+                className={`${isListening ? 'text-intern-blue animate-pulse' : 'text-intern-dark/70'} hover:text-intern-dark`}
+              >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 1a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3z"></path>
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
                   <line x1="12" y1="19" x2="12" y2="23"></line>
+                </svg>
+              </button>
+              <button onClick={send} aria-label="Send message" className="text-intern-dark/70 hover:text-intern-dark ml-2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
               </button>
             </div>

@@ -5,12 +5,14 @@ export type LanguageCode = "en" | "hi";
 type TranslationMap = Record<string, Record<LanguageCode, string>>;
 
 const translations: TranslationMap = {
+  // Navigation
   "nav.home": { en: "Home", hi: "होम" },
   "nav.about": { en: "About", hi: "परिचय" },
   "nav.how": { en: "How it Works", hi: "यह कैसे काम करता है" },
   "nav.internships": { en: "Internships", hi: "इंटर्नशिप" },
   "nav.signup": { en: "Sign Up", hi: "साइन अप" },
 
+  // Hero Section
   "hero.tag": { en: "\"DISCOVER INTERNSHIPS MADE FOR YOU\"", hi: "\"आपके लिए बनी इंटर्नशिप खोजें\"" },
   "hero.title1": { en: "Internमित्र –", hi: "Internमित्र –" },
   "hero.title2": { en: "Your Smart Guide to the", hi: "आपका स्मार्ट मार्गदर्शक" },
@@ -20,6 +22,43 @@ const translations: TranslationMap = {
     hi: "Internमित्र आपके कौशल, रुचि और स्थान के अनुसार सही इंटर्नशिप ढूँढने में मदद करता है — बस कुछ क्लिक में!",
   },
   "hero.cta": { en: "Find My Internship", hi: "मेरी इंटर्नशिप खोजें" },
+  
+  // Footer
+  "footer.title": { en: "Your Smart Guide to the Right Internship", hi: "सही इंटर्नशिप के लिए आपका स्मार्ट मार्गदर्शक" },
+  "footer.email": { en: "Email: support@internmitra.com", hi: "ईमेल: support@internmitra.com" },
+  "footer.phone": { en: "Phone: +91-XXXXXXXXXX", hi: "फोन: +91-XXXXXXXXXX" },
+  "footer.address": { en: "Address: New Delhi, India", hi: "पता: नई दिल्ली, भारत" },
+  "footer.quickLinks": { en: "Quick Links", hi: "त्वरित लिंक" },
+  "footer.resources": { en: "Resources", hi: "संसाधन" },
+  "footer.support": { en: "Support", hi: "सहायता" },
+  "footer.followUs": { en: "follow us", hi: "हमें फॉलो करें" },
+  "footer.copyright": { en: "© 2024 Internमित्र - PM Internship Scheme. All rights reserved.", hi: "© 2024 Internमित्र - पीएम इंटर्नशिप योजना. सर्वाधिकार सुरक्षित।" },
+  "footer.initiative": { en: "An initiative by the Government of India", hi: "भारत सरकार द्वारा एक पहल" },
+  "footer.madeWith": { en: "Made with ❤️ for the youth of India", hi: "भारत के युवाओं के लिए ❤️ से बनाया गया" },
+  
+  // Login/Signup
+  "login.title": { en: "Sign In", hi: "साइन इन करें" },
+  "login.email": { en: "Email", hi: "ईमेल" },
+  "login.password": { en: "Password", hi: "पासवर्ड" },
+  "login.confirmPassword": { en: "Confirm Password", hi: "पासवर्ड की पुष्टि करें" },
+  "login.rememberMe": { en: "Remember me", hi: "मुझे याद रखें" },
+  "login.forgotPassword": { en: "Forgot password?", hi: "पासवर्ड भूल गए?" },
+  "login.submit": { en: "Sign In", hi: "साइन इन करें" },
+  "login.noAccount": { en: "Don't have an account?", hi: "खाता नहीं है?" },
+  "login.createAccount": { en: "Sign Up", hi: "साइन अप करें" },
+  "login.haveAccount": { en: "Already have an account?", hi: "पहले से ही खाता है?" },
+  "login.signIn": { en: "Sign In", hi: "साइन इन करें" },
+  "login.orContinueWith": { en: "or continue with", hi: "या इसके साथ जारी रखें" },
+  
+  // 404 Page
+  "notFound.title": { en: "404", hi: "404" },
+  "notFound.message": { en: "Oops! Page not found", hi: "उफ़! पेज नहीं मिला" },
+  "notFound.returnHome": { en: "Return to Home", hi: "होम पेज पर वापस जाएं" },
+  
+  // Chat Page
+  "chat.welcome": { en: "Hello! I'm Internमित्र. Tell me your interests and location, I'll find internships for you.", hi: "नमस्ते! मैं Internमित्र हूँ। मुझे अपनी रुचियां और स्थान बताएं, मैं आपके लिए इंटर्नशिप खोजूंगा।" },
+  "chat.searching": { en: "Searching internships for:", hi: "इंटर्नशिप खोज रहा है:" },
+  "chat.speechNotSupported": { en: "Speech recognition is not supported in this browser.", hi: "इस ब्राउज़र में स्पीच रिकग्निशन समर्थित नहीं है।" }
 };
 
 type I18nContextValue = {
