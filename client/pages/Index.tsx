@@ -1276,6 +1276,8 @@ export default function Index() {
               </div>
             </div>
           </div>
+          
+          <hr className="border-black mb-8 mt-8" />
           <div className="text-center mt-8">
             <p className="text-sm text-black font-poppins">
                 {t("footer.madeWith")}
