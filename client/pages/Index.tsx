@@ -107,7 +107,7 @@ export default function Index() {
                 {t("nav.home")}
               </motion.button>
               <motion.button 
-                onClick={() => scrollToSection("about")} 
+                onClick={() => scrollToSection("categories")} 
                 className="text-intern-text hover:text-intern-dark"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -119,11 +119,11 @@ export default function Index() {
                 className="text-intern-text hover:text-intern-dark"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
+                >
                 {t("nav.how")}
               </motion.button>
               <motion.button 
-                onClick={() => scrollToSection("categories")} 
+                onClick={() => scrollToSection("about")} 
                 className="text-intern-text hover:text-intern-dark"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -965,7 +965,7 @@ export default function Index() {
                 <span>Start New Journey</span>
                 <svg
                   aria-hidden="true"
-                  className="w-14 h-14 ml-4 transition-transform duration-300 group-hover:translate-x-2"
+                  className="w-30 h-100 ml-4 transition-transform duration-300 group-hover:translate-x-2"
                   viewBox="0 0 84 71"
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
