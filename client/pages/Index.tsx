@@ -1,3 +1,25 @@
+// import { Button } from "@/components/ui/button";
+// import { Badge } from "@/components/ui/badge";
+// import { Card } from "@/components/ui/card";
+// import { Input } from "@/components/ui/input";
+// import ImgWithFallback from "@/components/ImgWithFallback";
+// import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+// import { useI18n } from "@/context/i18n";
+// import LoginModal from "@/components/LoginModal";
+// import PageTransition from "@/components/PageTransition";
+// import AnimatedSection from "@/components/AnimatedSection";
+// import AnimatedText from "@/components/AnimatedText";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// export default function Index() {
+//   const { t, lang, setLang } = useI18n();
+//   const [menuOpen, setMenuOpen] = useState(false);
+//   const [langOpen, setLangOpen] = useState(false);
+//   const [email, setEmail] = useState("");
+//   const [isLoginOpen, setIsLoginOpen] = useState(false);
+//   const [mounted, setMounted] = useState(false);
+//   const [isLoading, setIsLoading] = useState(true);
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -19,12 +41,28 @@ export default function Index() {
   const [email, setEmail] = useState("");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   useEffect(() => {
     setMounted(true);
     setIsLoading(false);
   }, []);
+  const handleSubscribe = () => {
+    if (!email || email.trim() === "") {
+      alert("Please enter your email address");
+      return;
+    }
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsSubscribed(true);
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  const resetSubscription = () => {
+    setIsSubscribed(false);
+    setEmail("");
+  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -312,7 +350,7 @@ export default function Index() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.1 }}
               >
                 <motion.div 
                   className="mx-4 mt-3 flex flex-col gap-3 px-6 py-4 bg-intern-bg rounded shadow"
@@ -999,39 +1037,77 @@ export default function Index() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 mt-8">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="rounded-2xl bg-[#1245C7] text-white px-8 md:px-14 py-10 shadow-xl">
-            <div className="space-y-8 text-center">
-              <h3 className="text-2xl lg:text-3xl font-bold font-poppins text-white">
-                Stay Updated with Latest Opportunities
-              </h3>
-              <p className="text-white font-bold font-poppins">
-                Get weekly updates about new internships, career tips, and
-                success stories directly in your inbox
-              </p>
-              <div className="flex flex-col lg:flex-row gap-4 max-w-2xl mx-auto">
-                <Input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={handleEmailChange}
-                  className="flex-1 px-6 py-4 text-lg border-intern-blue bg-transparent text-white placeholder:text-white/70"
-                />
-                <Button className="group bg-white text-intern-primary hover:bg-gray-100 px-8 py-4 text-lg font-bold font-poppins inline-flex items-center gap-2">
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-current"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
+      <section id="newsletter" className="py-16 px-4 max-w-6xl mx-auto">
+        <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 md:px-14 py-12 shadow-xl">
+          <div className="space-y-6 text-center">
+            {!isSubscribed ? (
+              <>
+                <h3 className="text-3xl lg:text-4xl font-bold font-poppins text-white">
+                  Stay Updated with Latest Opportunities
+                </h3>
+                <p className="text-xl text-white/90 font-medium max-w-2xl mx-auto">
+                  Get weekly updates about new internships, career tips, and 
+                  success stories directly in your inbox
+                </p>
+                <div className="flex flex-col lg:flex-row gap-4 max-w-lg mx-auto">
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 px-6 py-4 text-lg rounded-lg text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+                    disabled={isLoading}
+                  />
+                  <button 
+                    onClick={handleSubscribe}
+                    disabled={isLoading || !email.trim()}
+                    className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 min-w-40"
                   >
-                    <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2v.511l-8 5.334-8-5.334V6h16ZM4 18V8.255l7.385 4.915a1 1 0 0 0 1.23 0L20 8.255V18H4Z" />
-                  </svg>
-                  <span>Subscribe</span>
-                </Button>
+                    {isLoading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                        Subscribing...
+                      </>
+                    ) : (
+                      <>
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+
+                        Subscribe
+                        <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <p className="text-blue-200 text-sm">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-6">🎉</div>
+                <h3 className="text-4xl font-bold text-white mb-4">
+                  Congratulations! You're Subscribed!
+                </h3>
+                <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
+                  Welcome to our community! We'll send you amazing internship opportunities and career insights.
+                </p>
+                <div className="bg-white/10 rounded-lg p-6 mb-8 max-w-md mx-auto">
+                  <p className="text-white font-medium text-lg">
+                    📧 Confirmation sent to: <br />
+                    <span className="font-bold text-xl">{email}</span>
+                  </p>
+                </div>
+                <button 
+                  onClick={resetSubscription}
+                  className="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg font-bold transition-colors"
+                >
+                  Subscribe Another Email
+                </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
