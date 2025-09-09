@@ -499,28 +499,6 @@ export default function Index() {
                   </h3>
                 </AnimatedSection>
               {/* Step 4 */}
-              <AnimatedSection delay={0.4} className="text-center space-y-6 group">
-                <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
-                  <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                    <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <rect x="3" y="8" width="18" height="12" rx="2" ry="2" />
-                      <path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
-                      <line x1="12" y1="12" x2="12" y2="16" />
-                      <line x1="10" y1="14" x2="14" y2="14" />
-                    </svg>
-                    <div className="space-y-2 text-center">
-                      <p className="text-intern-text font-poppins text-sm leading-relaxed">
-                        Begin your career with confidence and grow with
-                        experienced mentors
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <h4 className="text-xl font-semibold text-intern-dark font-poppins">
-                  Start Your Journey
-                </h4>
-              </AnimatedSection>
           </div>
         </AnimatedSection>
       </section>
@@ -561,17 +539,48 @@ export default function Index() {
               </h4>
             </AnimatedSection>
             {/* Step 2 */}
-            <AnimatedSection delay={0.2} className="text-center space-y-6 group">
+          <AnimatedSection delay={0.2} className="text-center space-y-6 group">
+                <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
+                  <div className="relative p-8 flex flex-col items-center justify-center h-full">
+                    <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21v-2a7 7 0 0 0-14 0v2" />
+                  </svg>
+
+                    {/* <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <rect x="3" y="8" width="18" height="12" rx="2" ry="2" />
+                      <path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
+                      <line x1="12" y1="12" x2="12" y2="16" />
+                      <line x1="10" y1="14" x2="14" y2="14" />
+                    </svg> */}
+                    <div className="space-y-2 text-center">
+                      <p className="text-intern-text font-poppins text-sm leading-relaxed">
+                        Begin your career with confidence and grow with
+                        experienced mentors
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <h4 className="text-xl font-semibold text-intern-dark font-poppins">
+                  Start Your Journey
+                </h4>
+          </AnimatedSection>
+            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
                   <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21v-2a7 7 0 0 0-14 0v2" />
+                  </svg>
+                  {/* <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 .553-.894L9 2" />
                     <path d="M15 4l5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-.553.894L15 22" />
                     <path d="M9 12V2" />
                     <path d="M15 12V2" />
                     <path d="M9 12a3 3 0 0 0 6 0" />
-                  </svg>
+                  </svg> */}
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Get personalized recommendations and apply to internships
@@ -585,7 +594,7 @@ export default function Index() {
               </h4>
             </AnimatedSection>
             {/* Step 3 */}
-            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
+            <AnimatedSection delay={0.4} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
