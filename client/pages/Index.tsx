@@ -159,7 +159,7 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.about")}
+                {t("nav.internships")}
               </motion.button>
               <motion.button 
                 onClick={() => scrollToSection("how-it-works")} 
@@ -175,7 +175,7 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.internships")}
+                {t("nav.about")}
               </motion.button>
               <motion.button
                 onClick={() => setIsLoginOpen(true)}
@@ -1058,19 +1058,19 @@ export default function Index() {
                   Get weekly updates about new internships, career tips, and 
                   success stories directly in your inbox
                 </p>
-                <div className="flex flex-col lg:flex-row gap-4 max-w-lg mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 sm:gap-4 max-w-xl mx-auto w-full">
                   <input
                     type="email"
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 px-6 py-4 text-lg rounded-lg text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+                    className="w-full px-5 py-4 text-base sm:text-lg rounded-lg text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
                     disabled={isLoading}
                   />
                   <button 
                     onClick={handleSubscribe}
                     disabled={isLoading || !email.trim()}
-                    className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 min-w-40"
+                    className="bg-white text-blue-600 hover:bg-gray-100 px-6 sm:px-8 py-4 text-base sm:text-lg font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
                       <>

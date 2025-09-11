@@ -85,7 +85,7 @@ export default function Dashboard() {
                   </svg>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[360px] bg-intern-bg">
+              <SheetContent side="left" className="w-[85vw] sm:w-[360px] bg-intern-bg">
                 <SheetHeader>
                   <SheetTitle className="font-poppins">Menu</SheetTitle>
                 </SheetHeader>
