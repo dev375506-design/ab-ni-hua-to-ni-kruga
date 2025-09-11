@@ -490,7 +490,7 @@ export default function Index() {
             <div className="relative" />
           </div>
           {/* Trust Indicators */}
-          <AnimatedSection delay={1.8} className="mt-16 max-w-7xl mx-auto">
+          <AnimatedSection delay={0.2} className="mt-16 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
               <AnimatedSection delay={2.0} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
@@ -507,7 +507,7 @@ export default function Index() {
                     Trusted Partners
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={2.2} className="space-y-2">
+                <AnimatedSection delay={0.3} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M8 6a3 3 0 0 0-3 3v1a3 3 0 0 0 0 6h1" />
@@ -522,7 +522,7 @@ export default function Index() {
                     Smart Matching
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={2.4} className="space-y-2">
+                <AnimatedSection delay={0.4} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M8 21l4-8 4 8" />
