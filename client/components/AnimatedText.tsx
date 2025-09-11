@@ -29,13 +29,13 @@ const AnimatedText = ({
   };
 
   // Child variants (words)
-  const child = {
+  const child: any = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         damping: 12,
         stiffness: 100,
       },

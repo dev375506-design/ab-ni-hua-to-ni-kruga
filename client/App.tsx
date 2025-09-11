@@ -9,6 +9,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
+import Applied from "./pages/Applied";
+import Saved from "./pages/Saved";
+import Recommended from "./pages/Recommended";
 import { LanguageProvider } from "./context/i18n";
 
 const queryClient = new QueryClient();
@@ -23,6 +27,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/applied" element={<Applied />} />
+            <Route path="/saved" element={<Saved />} />
+            <Route path="/recommended" element={<Recommended />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
