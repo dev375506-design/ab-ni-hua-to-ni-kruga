@@ -134,8 +134,8 @@ export default function Dashboard() {
             <span className="text-intern-red">मित्र</span>
           </div>
 
-          {/* Center: Hamburger (opens drawer) - Mobile Only */}
-          <div className="flex justify-center lg:hidden">
+          {/* Center: Hamburger (opens drawer) - Always Visible */}
+          <div className="flex justify-center">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" className="text-intern-dark p-2">
@@ -147,7 +147,7 @@ export default function Dashboard() {
                   </svg>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[90vw] sm:w-[85vw] bg-intern-bg">
+              <SheetContent side="left" className="w-[90vw] sm:w-[85vw] lg:w-[400px] bg-intern-bg">
                 <SheetHeader>
                   <SheetTitle className="font-poppins text-lg">Menu</SheetTitle>
                 </SheetHeader>
