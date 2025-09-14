@@ -10,9 +10,11 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
-import Applied from "./pages/Applied";
-import Saved from "./pages/Saved";
-import Recommended from "./pages/Recommended";
+import MyProfile from "./pages/MyProfile";
+import AppliedInternships from "./pages/AppliedInternships";
+import SavedInternships from "./pages/SavedInternships";
+import RecommendedInternships from "./pages/RecommendedInternships";
+import ResumeBuilder from "./pages/ResumeBuilder";
 import { LanguageProvider } from "./context/i18n";
 
 const queryClient = new QueryClient();
@@ -28,9 +30,11 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/applied" element={<Applied />} />
-            <Route path="/saved" element={<Saved />} />
-            <Route path="/recommended" element={<Recommended />} />
+            <Route path="/profile" element={<MyProfile />} />
+            <Route path="/applied" element={<AppliedInternships />} />
+            <Route path="/saved" element={<SavedInternships />} />
+            <Route path="/recommended" element={<RecommendedInternships />} />
+            <Route path="/resume-builder" element={<ResumeBuilder />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
