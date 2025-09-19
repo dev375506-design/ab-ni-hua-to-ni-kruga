@@ -52,6 +52,7 @@ export default function AppRouter() {
           } 
         />
         <Route path="/chat" element={<Chat />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
