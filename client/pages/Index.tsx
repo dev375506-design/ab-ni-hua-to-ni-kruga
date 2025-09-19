@@ -185,6 +185,15 @@ export default function Index() {
               >
                 Sign Up
               </motion.button>
+              <Link to="/login">
+                <motion.button
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-poppins"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  Login
+                </motion.button>
+              </Link>
               {/* Language Dropdown */}
               <div className="relative">
                 <motion.button
@@ -282,6 +291,16 @@ export default function Index() {
               >
                 {t("nav.signup")}
               </motion.button>
+              <Link to="/login">
+                <motion.button
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-lg font-poppins"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  Login
+                </motion.button>
+              </Link>
               <div className="relative">
                 <motion.button
                   type="button"

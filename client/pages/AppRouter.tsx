@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Index from './Index';
 import Dashboard from "@/components/Dashboard";
 import Chat from "./Chat";
+import Login from "./Login";
 
 export default function AppRouter() {
   const [user, setUser] = useState<any>(null);
@@ -41,12 +42,13 @@ export default function AppRouter() {
     <Router>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/login" element={<Login />} />
         <Route 
           path="/dashboard" 
           element={
             user ? 
               <Dashboard user={user} onLogout={handleLogout} /> : 
-              <Navigate to="/" replace />
+              <Navigate to="/login" replace />
           } 
         />
         <Route path="/chat" element={<Chat />} />
