@@ -125,6 +125,8 @@ export default function Index() {
                   {menuOpen ? "✕" : "☰"}
                   </motion.span>
             </motion.button>
+            {/* why bro why...... */}
+
 
             {/* Desktop Menu */}
             <motion.div
@@ -443,7 +445,7 @@ export default function Index() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
                 >
                   <Badge className="bg-transparent border-none p-0 text-lg lg:text-xl font-bold text-orange-600 uppercase">
                     {t("hero.tag")}
@@ -453,7 +455,7 @@ export default function Index() {
                   <AnimatedText
                     text={t("hero.title1")}
                     tag="h1"
-                    delay={0.3}
+                    delay={0.2}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                   <AnimatedText
@@ -465,14 +467,14 @@ export default function Index() {
                   <AnimatedText
                     text={t("hero.title3")}
                     tag="h1"
-                    delay={0.5}
+                    delay={0.3}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                 </div>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 1.3, duration: 0.5 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
                   className="text-lg lg:text-xl text-intern-text font-poppins max-w-md leading-relaxed"
                 >
                   {t("hero.desc")}
@@ -481,7 +483,7 @@ export default function Index() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
               >
                 <Button
                   asChild
@@ -510,9 +512,9 @@ export default function Index() {
             <div className="relative" />
           </div>
           {/* Trust Indicators */}
-          <AnimatedSection delay={0.7} className="mt-16 max-w-7xl mx-auto">
+          <AnimatedSection delay={0.2} className="mt-16 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-              <AnimatedSection delay={0.8} className="space-y-2">
+              <AnimatedSection delay={0.1} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -527,7 +529,7 @@ export default function Index() {
                     Trusted Partners
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={0.9} className="space-y-2">
+                <AnimatedSection delay={0.2} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M8 6a3 3 0 0 0-3 3v1a3 3 0 0 0 0 6h1" />
@@ -542,7 +544,7 @@ export default function Index() {
                     Smart Matching
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={1.0} className="space-y-2">
+                <AnimatedSection delay={0.3} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M8 21l4-8 4 8" />
@@ -619,7 +621,7 @@ export default function Index() {
                   Start Your Journey
                 </h4>
           </AnimatedSection>
-            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
+            <AnimatedSection delay={0.2} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
@@ -643,7 +645,7 @@ export default function Index() {
               </h4>
             </AnimatedSection>
             {/* Step 3 */}
-            <AnimatedSection delay={0.4} className="text-center space-y-6 group">
+            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
