@@ -11,15 +11,13 @@
     ]
   },
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "start": "vite preview",
-  "test": "vitest --run",
-  "format.fix": "prettier --write .",
-  "typecheck": "tsc"
-},
-
-
+    "dev": "vite",
+    "build": "pnpm install --ignore-scripts=false && vite build",
+    "start": "vite preview",
+    "test": "vitest --run",
+    "format.fix": "prettier --write .",
+    "typecheck": "tsc"
+  },
   "dependencies": {
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
