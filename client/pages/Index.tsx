@@ -1,25 +1,3 @@
-// import { Button } from "@/components/ui/button";
-// import { Badge } from "@/components/ui/badge";
-// import { Card } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
-// import ImgWithFallback from "@/components/ImgWithFallback";
-// import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import { useI18n } from "@/context/i18n";
-// import LoginModal from "@/components/LoginModal";
-// import PageTransition from "@/components/PageTransition";
-// import AnimatedSection from "@/components/AnimatedSection";
-// import AnimatedText from "@/components/AnimatedText";
-// import { motion, AnimatePresence } from "framer-motion";
-
-// export default function Index() {
-//   const { t, lang, setLang } = useI18n();
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [langOpen, setLangOpen] = useState(false);
-//   const [email, setEmail] = useState("");
-//   const [isLoginOpen, setIsLoginOpen] = useState(false);
-//   const [mounted, setMounted] = useState(false);
-//   const [isLoading, setIsLoading] = useState(true);
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -43,10 +21,12 @@ export default function Index() {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  
   useEffect(() => {
     setMounted(true);
     setIsLoading(false);
   }, []);
+
   const handleSubscribe = () => {
     if (!email || email.trim() === "") {
       alert("Please enter your email address");
@@ -72,6 +52,12 @@ export default function Index() {
     // Navigate to dashboard using proper routing
     window.location.href = "/dashboard";
   };
+
+  // Handle sign up button clicks
+  
+  const handleSignUpClick = () => {
+  setIsLoginOpen(true);
+};
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -131,11 +117,13 @@ export default function Index() {
               whileTap={{ scale: 0.9 }}
             >
               <motion.span
-                animate={{ rotate: menuOpen ? 90 : 0 }}
+              animate={{ 
+                rotateZ: menuOpen ? 45 : 0,
+                scale: menuOpen ? 0.9 : 1}}
                 transition={{ duration: 0.3 }}
-              >
-                ☰
-              </motion.span>
+                >
+                  {menuOpen ? "✕" : "☰"}
+                  </motion.span>
             </motion.button>
 
             {/* Desktop Menu */}
@@ -178,7 +166,7 @@ export default function Index() {
                 {t("nav.about")}
               </motion.button>
               <motion.button
-                onClick={() => setIsLoginOpen(true)}
+                onClick={handleSignUpClick}
                 className="text-intern-text hover:text-intern-dark transition-colors font-poppins"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -275,22 +263,13 @@ export default function Index() {
               </div>
             </motion.div>
 
-            {/* Mobile right actions */}
+            {/* Mobile right actions - Only Login button */}
             <motion.div 
               className="lg:hidden flex items-center gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.3 }}
             >
-              <motion.button
-                onClick={() => setIsLoginOpen(true)}
-                className="text-intern-text hover:text-intern-dark"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                {t("nav.signup")}
-              </motion.button>
               <Link to="/login">
                 <motion.button
                   className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-lg font-poppins"
@@ -370,7 +349,7 @@ export default function Index() {
             </motion.div>
           </div>
 
-          {/* Mobile Menu (only visible when menuOpen = true) */}
+          {/* Mobile Menu (hamburger content) - Sign Up is here */}
           <AnimatePresence>
             {menuOpen && (
               <motion.div 
@@ -426,12 +405,25 @@ export default function Index() {
                   >
                     {t("nav.internships")}
                   </motion.button>
+                  {/* Sign Up in mobile hamburger menu */}
+                  <motion.button
+                    className="text-intern-text text-left font-medium"
+                    onClick={() => { 
+                      setMenuOpen(false); 
+                      handleSignUpClick(); 
+                    }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.2 }}
+                    whileHover={{ x: 5 }}
+                  >
+                    Sign Up
+                  </motion.button>
                 </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.nav>
-
         {/* Hero Section */}
         <section id="hero" className="relative pt-24 pb-16 px-6 lg:px-20 mt-10">
           {/* Background image behind hero */}
@@ -451,7 +443,7 @@ export default function Index() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   <Badge className="bg-transparent border-none p-0 text-lg lg:text-xl font-bold text-orange-600 uppercase">
                     {t("hero.tag")}
@@ -461,19 +453,19 @@ export default function Index() {
                   <AnimatedText
                     text={t("hero.title1")}
                     tag="h1"
-                    delay={0.7}
+                    delay={0.3}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                   <AnimatedText
                     text={t("hero.title2")}
                     tag="h1"
-                    delay={0.9}
+                    delay={0.4}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                   <AnimatedText
                     text={t("hero.title3")}
                     tag="h1"
-                    delay={1.1}
+                    delay={0.5}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                 </div>
@@ -489,7 +481,7 @@ export default function Index() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 0.5 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <Button
                   asChild
@@ -518,9 +510,9 @@ export default function Index() {
             <div className="relative" />
           </div>
           {/* Trust Indicators */}
-          <AnimatedSection delay={1.8} className="mt-16 max-w-7xl mx-auto">
+          <AnimatedSection delay={0.7} className="mt-16 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-              <AnimatedSection delay={2.0} className="space-y-2">
+              <AnimatedSection delay={0.8} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -535,7 +527,7 @@ export default function Index() {
                     Trusted Partners
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={2.2} className="space-y-2">
+                <AnimatedSection delay={0.9} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M8 6a3 3 0 0 0-3 3v1a3 3 0 0 0 0 6h1" />
@@ -550,7 +542,7 @@ export default function Index() {
                     Smart Matching
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={2.4} className="space-y-2">
+                <AnimatedSection delay={1.0} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M8 21l4-8 4 8" />
@@ -1313,9 +1305,11 @@ export default function Index() {
           </div>
         </div>
       </footer>
-
-      {/* Login modal */}
-        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onSuccess={handleAuthSuccess} />
+      <LoginModal 
+          isOpen={isLoginOpen} 
+          onClose={() => setIsLoginOpen(false)} 
+          onSuccess={handleAuthSuccess} 
+        />
       </main>
     </PageTransition>
   );
