@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useI18n } from "@/context/i18n";
@@ -33,6 +34,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
       setErrors((prev: any) => ({ ...prev, [name]: null }));
     }
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

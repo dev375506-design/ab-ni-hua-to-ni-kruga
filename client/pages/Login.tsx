@@ -4,26 +4,45 @@ import { Input } from "@/components/ui/input";
 import { useNavigate, Link } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
 
-export default function Login() {
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  provider?: string;
+}
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+// Define types for better TypeScript support
+
+interface LoginProps {
+  onLoginSuccess?: () => void;
+}
+
+export default function Login({ onLoginSuccess }: LoginProps) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [oauthLoading, setOauthLoading] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error when user types
     if (errors[name]) {
-      setErrors((prev: any) => ({ ...prev, [name]: null }));
+      setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     
@@ -31,7 +50,7 @@ export default function Login() {
       // For demo purposes, simulate a successful login
       setTimeout(() => {
         // Create mock user data
-        const mockUser = {
+        const mockUser: User = {
           id: '123456',
           name: 'Demo User',
           email: formData.email,
@@ -42,8 +61,14 @@ export default function Login() {
         localStorage.setItem('token', 'demo-jwt-token');
         localStorage.setItem('user', JSON.stringify(mockUser));
         
-        // Navigate to dashboard
-        navigate('/dashboard');
+        // Call callback if provided (for state management)
+        if (onLoginSuccess) {
+          onLoginSuccess();
+        }
+        
+        // Use window.location.href for immediate navigation with state refresh
+        window.location.href = '/dashboard';
+        
         setIsLoading(false);
       }, 1000);
     } catch (error) {
@@ -53,90 +78,35 @@ export default function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setOauthLoading('google');
+  const handleOAuthLogin = async (provider: 'google' | 'facebook' | 'apple') => {
+    setOauthLoading(provider);
     
-    // For demo purposes, simulate a successful Google login
+    // For demo purposes, simulate a successful OAuth login
     setTimeout(() => {
       try {
-        // Create mock user data for Google login
-        const mockGoogleUser = {
-          id: 'g-123456',
-          name: 'Google User',
-          email: 'google.user@example.com',
+        // Create mock user data based on provider
+        const mockUser: User = {
+          id: `${provider}-123456`,
+          name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+          email: `${provider}.user@example.com`,
           role: 'student',
-          provider: 'google'
+          provider: provider
         };
         
         // Store user data and token
-        localStorage.setItem('token', 'google-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockGoogleUser));
+        localStorage.setItem('token', `${provider}-demo-jwt-token`);
+        localStorage.setItem('user', JSON.stringify(mockUser));
         
-        // Navigate to dashboard
-        navigate('/dashboard');
+        // Call callback if provided
+        if (onLoginSuccess) {
+          onLoginSuccess();
+        }
+        
+        // Use window.location.href for immediate navigation
+        window.location.href = '/dashboard';
       } catch (error) {
-        console.error('Google login failed:', error);
-        alert('Google login failed');
-      } finally {
-        setOauthLoading(null);
-      }
-    }, 1500);
-  };
-
-  const handleFacebookLogin = async () => {
-    setOauthLoading('facebook');
-    
-    // For demo purposes, simulate a successful Facebook login
-    setTimeout(() => {
-      try {
-        // Create mock user data for Facebook login
-        const mockFacebookUser = {
-          id: 'fb-123456',
-          name: 'Facebook User',
-          email: 'facebook.user@example.com',
-          role: 'student',
-          provider: 'facebook'
-        };
-        
-        // Store user data and token
-        localStorage.setItem('token', 'facebook-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockFacebookUser));
-        
-        // Navigate to dashboard
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('Facebook login failed:', error);
-        alert('Facebook login failed');
-      } finally {
-        setOauthLoading(null);
-      }
-    }, 1500);
-  };
-
-  const handleAppleLogin = async () => {
-    setOauthLoading('apple');
-    
-    // For demo purposes, simulate a successful Apple login
-    setTimeout(() => {
-      try {
-        // Create mock user data for Apple login
-        const mockAppleUser = {
-          id: 'apple-123456',
-          name: 'Apple User',
-          email: 'apple.user@example.com',
-          role: 'student',
-          provider: 'apple'
-        };
-        
-        // Store user data and token
-        localStorage.setItem('token', 'apple-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockAppleUser));
-        
-        // Navigate to dashboard
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('Apple login failed:', error);
-        alert('Apple login failed');
+        console.error(`${provider} login failed:`, error);
+        alert(`${provider} login failed`);
       } finally {
         setOauthLoading(null);
       }
@@ -166,7 +136,7 @@ export default function Login() {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={handleGoogleLogin}
+              onClick={() => handleOAuthLogin('google')}
               disabled={oauthLoading === 'google'}
             >
               {oauthLoading === 'google' ? (
@@ -185,7 +155,7 @@ export default function Login() {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={handleFacebookLogin}
+              onClick={() => handleOAuthLogin('facebook')}
               disabled={oauthLoading === 'facebook'}
             >
               {oauthLoading === 'facebook' ? (
@@ -201,7 +171,7 @@ export default function Login() {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={handleAppleLogin}
+              onClick={() => handleOAuthLogin('apple')}
               disabled={oauthLoading === 'apple'}
             >
               {oauthLoading === 'apple' ? (
@@ -263,6 +233,12 @@ export default function Login() {
               </button>
             </div>
 
+            {errors.submit && (
+              <div className="text-red-600 text-sm text-center">
+                {errors.submit}
+              </div>
+            )}
+
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
@@ -281,11 +257,11 @@ export default function Login() {
 
           <div className="text-center text-sm mt-6 text-gray-600">
             Don't have an account?{" "}
-            <Link
-              to="/"
-              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline"
-            >
-              Sign Up
+            
+            <Link to="/signup" 
+            
+            className="text-blue-600 font-semibold hover:text-blue-700 hover:underline">  
+            Sign Up
             </Link>
           </div>
         </div>
