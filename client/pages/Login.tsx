@@ -257,12 +257,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
           <div className="text-center text-sm mt-6 text-gray-600">
             Don't have an account?{" "}
-            
-            <Link to="/signup" 
-            
-            className="text-blue-600 font-semibold hover:text-blue-700 hover:underline">  
-            Sign Up
-            </Link>
+            <button
+              onClick={() => navigate('/')}
+              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline"
+            >
+              Sign Up
+            </button>
           </div>
         </div>
       </div>

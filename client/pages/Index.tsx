@@ -87,7 +87,7 @@ export default function Index() {
           className="w-full py-4 px-6 lg:px-20 bg-intern-bg shadow fixed top-0 left-0 right-0 z-50"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="relative max-w-7xl mx-auto flex items-center justify-between">
             {/* Logo */}
@@ -253,11 +253,24 @@ export default function Index() {
                       >
                         <motion.button
                           className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
-                          onClick={() => setLangOpen(false)}
+                          onClick={() => { setLang("mr"); setLangOpen(false); }}
                           whileHover={{ x: 2 }}
                         >
                           मराठी (MR)
                         </motion.button>
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15, duration: 0.2 }}
+                      >
+                        {/* <motion.button
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
+                          onClick={() => setLangOpen(false)}
+                          whileHover={{ x: 2 }}
+                        >
+                          मराठी (MR)
+                        </motion.button> */}
                       </motion.li>
                     </motion.ul>
                   )}
@@ -344,6 +357,19 @@ export default function Index() {
                           हिंदी (HI)
                         </motion.button>
                       </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15, duration: 0.2 }}
+                      >
+                        <motion.button
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
+                          onClick={() => { setLang("mr"); setLangOpen(false); }}
+                          whileHover={{ x: 2 }}
+                        >
+                          मराठी (MR)
+                        </motion.button>
+                      </motion.li>
                     </motion.ul>
                   )}
                 </AnimatePresence>
@@ -356,16 +382,16 @@ export default function Index() {
             {menuOpen && (
               <motion.div 
                 className="lg:hidden fixed inset-x-0 top-[60px] z-50"
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.1 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.05 }}
               >
                 <motion.div 
                   className="mx-4 mt-3 flex flex-col gap-3 px-6 py-4 bg-intern-bg rounded shadow"
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.1 }}
                 >
                   <motion.button 
                     className="text-intern-text text-left" 
@@ -582,10 +608,13 @@ export default function Index() {
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <circle cx="12" cy="8" r="5" />
-                    <path d="M20 21v-2a7 7 0 0 0-14 0v2" />
-                  </svg>
+                  <ImgWithFallback
+                    src="/create-profile.svg"
+                    fallback="/placeholder.svg"
+                    alt="Create Your Profile"
+                    className="w-16 h-16 object-contain mb-4"
+                    loading="eager"
+                  />
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Tell us about your education, skills, and interests in
@@ -625,13 +654,13 @@ export default function Index() {
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 .553-.894L9 2" />
-                    <path d="M15 4l5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-.553.894L15 22" />
-                    <path d="M9 12V2" />
-                    <path d="M15 12V2" />
-                    <path d="M9 12a3 3 0 0 0 6 0" />
-                  </svg>
+                  <ImgWithFallback
+                    src="/ai-matches.svg"
+                    fallback="/placeholder.svg"
+                    alt="AI Finds Matches"
+                    className="w-16 h-16 object-contain mb-4"
+                    loading="eager"
+                  />
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Get personalized recommendations and apply to internships
@@ -649,12 +678,13 @@ export default function Index() {
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M8 12h.01" />
-                    <path d="M12 12h.01" />
-                    <path d="M16 12h.01" />
-                  </svg>
+                  <ImgWithFallback
+                    src="/review-apply.svg"
+                    fallback="/placeholder.svg"
+                    alt="Review and Apply"
+                    className="w-16 h-16 object-contain mb-4"
+                    loading="eager"
+                  />
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Get personalized recommendations and apply to internships
