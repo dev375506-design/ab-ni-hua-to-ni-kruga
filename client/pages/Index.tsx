@@ -149,7 +149,7 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.internships")}
+                {t("nav.about")}
               </motion.button>
               <motion.button 
                 onClick={() => scrollToSection("how-it-works")} 
@@ -165,7 +165,7 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.about")}
+                {t("nav.internships")}
               </motion.button>
               <motion.button
                 onClick={handleSignUpClick}
@@ -264,13 +264,7 @@ export default function Index() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.15, duration: 0.2 }}
                       >
-                        {/* <motion.button
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
-                          onClick={() => setLangOpen(false)}
-                          whileHover={{ x: 2 }}
-                        >
-                          मराठी (MR)
-                        </motion.button> */}
+                       
                       </motion.li>
                     </motion.ul>
                   )}
