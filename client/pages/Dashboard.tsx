@@ -23,6 +23,11 @@ import { Progress } from "@/components/ui/progress";
 import ProgressTracker from "@/components/ProgressTracker";
 import { Link } from "react-router-dom";
 
+interface DashboardProps {
+  user: any;
+  onLogout: () => void;
+}
+
 type StoredUser = {
   name?: string;
   email?: string;

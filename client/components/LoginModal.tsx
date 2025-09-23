@@ -1,9 +1,7 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useI18n } from "@/context/i18n";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -12,6 +10,8 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
+  const navigate = useNavigate();
+  const [response, setResponse] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<string | null>(null);
@@ -22,7 +22,6 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
     name: "",
   });
   const [errors, setErrors] = useState<any>({});
-  const [showPassword, setShowPassword] = useState(false);
 
   if (!isOpen) return null;
 
@@ -33,157 +32,128 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
     if (errors[name]) {
       setErrors((prev: any) => ({ ...prev, [name]: null }));
     }
+    // Clear response when user types
+    if (response) {
+      setResponse('');
+    }
   };
   
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setResponse('');
+    setErrors({});
     
-    try {
-      const endpoint = isSignUp ? '/api/auth/signup' : '/api/auth/signin';
+    const { name, email, password, confirmPassword } = formData;
+    
+    if (isSignUp) {
+      // Handle Signup
+      if (password !== confirmPassword) { 
+        setResponse('Passwords do not match!');
+        setIsLoading(false);
+        return;
+      }
       
-      // For demo purposes, simulate a successful login
-      // In a real app, you would make an actual API call
-      setTimeout(() => {
-        // Create mock user data
+      try {
+        const res = await fetch('https://hk-proj.onrender.com/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          setResponse('Account created successfully! You can now sign in.');
+          // Switch to login mode after successful signup
+          setTimeout(() => {
+            setIsSignUp(false);
+            setResponse('');
+            setFormData({
+              email: email, // Keep the email
+              password: '',
+              confirmPassword: '',
+              name: '',
+            });
+          }, 2000);
+        } else {
+          setResponse(data.message || 'Signup failed. Please try again.');
+        }
+      } catch (err) {
+        console.error('Signup error:', err);
+        setResponse('Network error. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // Handle Login
+      try {
+        const res = await fetch("https://hk-proj.onrender.com/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          console.log("Login successful:", data.user_info);
+          
+          // Store user data and token
+          localStorage.setItem('token', data.token || 'demo-jwt-token');
+          localStorage.setItem('user', JSON.stringify(data.user_info));
+          
+          // Call the onSuccess callback with the user data
+          onSuccess(data.user_info);
+          onClose();
+        } else {
+          setResponse(data.message || 'Login failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        setResponse('Network error. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleOAuthLogin = async (provider: 'google' | 'facebook' | 'apple') => {
+    setOauthLoading(provider);
+    
+    // For demo purposes, simulate a successful OAuth login
+    setTimeout(() => {
+      try {
+        // Create mock user data based on provider
         const mockUser = {
-          id: '123456',
-          name: formData.name || 'Demo User',
-          email: formData.email,
-          role: 'student'
+          id: `${provider}-123456`,
+          name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+          email: `${provider}.user@example.com`,
+          role: 'student',
+          provider: provider
         };
         
         // Store user data and token
-        localStorage.setItem('token', 'demo-jwt-token');
+        localStorage.setItem('token', `${provider}-demo-jwt-token`);
         localStorage.setItem('user', JSON.stringify(mockUser));
         
         // Call the onSuccess callback with the user data
         onSuccess(mockUser);
         onClose();
-        setIsLoading(false);
-      }, 1000);
-    } catch (error) {
-      console.error('Auth error:', error);
-      setErrors({ submit: 'Something went wrong. Please try again.' });
-      setIsLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    setOauthLoading('google');
-    
-    // For demo purposes, simulate a successful Google login
-    setTimeout(() => {
-      try {
-        // Create mock user data for Google login
-        const mockGoogleUser = {
-          id: 'g-123456',
-          name: 'Google User',
-          email: 'google.user@example.com',
-          role: 'student',
-          provider: 'google'
-        };
-        
-        // Store user data and token
-        localStorage.setItem('token', 'google-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockGoogleUser));
-        
-        // Call the onSuccess callback with the user data
-        onSuccess(mockGoogleUser);
-        onClose();
       } catch (error) {
-        console.error('Google login failed:', error);
-        alert('Google login failed');
+        console.error(`${provider} login failed:`, error);
+        setResponse(`${provider} login failed`);
       } finally {
         setOauthLoading(null);
       }
     }, 1500);
   };
 
-  const handleFacebookLogin = async () => {
-    setOauthLoading('facebook');
-    
-    // For demo purposes, simulate a successful Facebook login
-    setTimeout(() => {
-      try {
-        // Create mock user data for Facebook login
-        const mockFacebookUser = {
-          id: 'fb-123456',
-          name: 'Facebook User',
-          email: 'facebook.user@example.com',
-          role: 'student',
-          provider: 'facebook'
-        };
-        
-        // Store user data and token
-        localStorage.setItem('token', 'facebook-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockFacebookUser));
-        
-        // Call the onSuccess callback with the user data
-        onSuccess(mockFacebookUser);
-        onClose();
-      } catch (error) {
-        console.error('Facebook login failed:', error);
-        alert('Facebook login failed');
-      } finally {
-        setOauthLoading(null);
-      }
-    }, 1500);
-  };
-
-  const handleAppleLogin = async () => {
-    setOauthLoading('apple');
-    
-    // For demo purposes, simulate a successful Apple login
-    setTimeout(() => {
-      try {
-        // Create mock user data for Apple login
-        const mockAppleUser = {
-          id: 'apple-123456',
-          name: 'Apple User',
-          email: 'apple.user@example.com',
-          role: 'student',
-          provider: 'apple'
-        };
-        
-        // Store user data and token
-        localStorage.setItem('token', 'apple-demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(mockAppleUser));
-        
-        // Call the onSuccess callback with the user data
-        onSuccess(mockAppleUser);
-        onClose();
-      } catch (error) {
-        console.error('Apple login failed:', error);
-        alert('Apple login failed');
-      } finally {
-        setOauthLoading(null);
-      }
-    }, 1500);
-  };
-
-  const loadFacebookSDK = () => {
-    return new Promise((resolve) => {
-      if (document.getElementById('facebook-jssdk')) {
-        resolve(true);
-        return;
-      }
-      const script = document.createElement('script');
-      script.id = 'facebook-jssdk';
-      script.src = 'https://connect.facebook.net/en_US/sdk.js';
-      script.onload = () => {
-        window.FB.init({
-          appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
-          cookie: true,
-          xfbml: true,
-          version: 'v18.0'
-        });
-        resolve(true);
-      };
-      document.head.appendChild(script);
-    });
-  };
+  const handleGoogleLogin = () => handleOAuthLogin('google');
+  const handleFacebookLogin = () => handleOAuthLogin('facebook');
+  const handleAppleLogin = () => handleOAuthLogin('apple');
 
   return (
     <div
@@ -193,13 +163,13 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
       aria-modal="true"
     >
       <div
-        className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-2xl transform transition-all"
+        className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-2xl transform transition-all max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-2xl font-light transition-colors"
+          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-2xl font-light transition-colors z-10"
         >
           ×
         </button>
@@ -283,6 +253,16 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
             <span className="px-4 bg-white text-gray-500 font-medium">or continue with email</span>
           </div>
         </div>
+
+        {response && (
+          <div className={`text-sm text-center p-3 rounded-lg mb-4 ${
+            response.includes('successfully') 
+              ? 'bg-green-100 text-green-700' 
+              : 'bg-red-100 text-red-700'
+          }`}>
+            {response}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
@@ -385,7 +365,18 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             type="button"
-            onClick={() => setIsSignUp((s) => !s)}
+            onClick={() => {
+              setIsSignUp((s) => !s);
+              setResponse('');
+              setErrors({});
+              // Clear form data when switching modes
+              setFormData({
+                email: "",
+                password: "",
+                confirmPassword: "",
+                name: "",
+              });
+            }}
             className="text-blue-600 font-semibold hover:text-blue-700 hover:underline"
           >
             {isSignUp ? "Sign In" : "Create Account"}
