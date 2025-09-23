@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
 
 interface User {
@@ -16,6 +16,8 @@ interface FormData {
   email: string;
   password: string;
 }
+
+// Define types for better TypeScript support
 
 interface LoginProps {
   onLoginSuccess?: () => void;
@@ -43,79 +45,78 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrors({}); // Clear previous errors
-    
-    const { email, password } = formData;
     
     try {
-      const res = await fetch("https://hk-proj.onrender.com/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      
-      const data = await res.json();
-      
-      if (data.success) {
-        console.log("Login successful:", data.user_info);
+      // For demo purposes, simulate a successful login
+      setTimeout(() => {
+        // Create mock user data
+        const mockUser: User = {
+          id: '123456',
+          name: 'Demo User',
+          email: formData.email,
+          role: 'student'
+        };
         
         // Store user data and token
-        localStorage.setItem('token', data.token || 'demo-jwt-token');
-        localStorage.setItem('user', JSON.stringify(data.user_info));
+        localStorage.setItem('token', 'demo-jwt-token');
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        
+        // Call callback if provided (for state management)
+        if (onLoginSuccess) {
+          onLoginSuccess();
+        }
+        
+        // Use window.location.href for immediate navigation with state refresh
+        window.location.href = '/dashboard';
+        
+        setIsLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error('Auth error:', error);
+      setErrors({ submit: 'Something went wrong. Please try again.' });
+      setIsLoading(false);
+    }
+  };
+
+  const handleOAuthLogin = async (provider: 'google' | 'facebook' | 'apple') => {
+    setOauthLoading(provider);
+    
+    // For demo purposes, simulate a successful OAuth login
+    setTimeout(() => {
+      try {
+        // Create mock user data based on provider
+        const mockUser: User = {
+          id: `${provider}-123456`,
+          name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+          email: `${provider}.user@example.com`,
+          role: 'student',
+          provider: provider
+        };
+        
+        // Store user data and token
+        localStorage.setItem('token', `${provider}-demo-jwt-token`);
+        localStorage.setItem('user', JSON.stringify(mockUser));
         
         // Call callback if provided
         if (onLoginSuccess) {
           onLoginSuccess();
         }
         
-        // Navigate to dashboard
-        navigate('/dashboard');
-      } else {
-        // Show error message
-        setErrors({ submit: data.message || 'Login failed. Please try again.' });
+        // Use window.location.href for immediate navigation
+        window.location.href = '/dashboard';
+      } catch (error) {
+        console.error(`${provider} login failed:`, error);
+        alert(`${provider} login failed`);
+      } finally {
+        setOauthLoading(null);
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setErrors({ submit: 'Network error. Please try again.' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Simple redirect to signup page
-  const redirectToSignup = () => {
-    window.location.href = '/signup';
-  };
-
-  // Handle close/cancel login
-  const handleClose = () => {
-    // Navigate back to home page or previous page
-    navigate('/');
-  };
-
-  // Placeholder OAuth handlers
-  const handleOAuthLogin = (provider: string) => {
-    setOauthLoading(provider);
-    setErrors({ submit: `${provider} OAuth requires setup. Please use email login for now.` });
-    setTimeout(() => {
-      setOauthLoading(null);
-    }, 2000);
+    }, 1500);
   };
 
   return (
     <PageTransition>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg relative">
-          {/* Close/Cancel Button */}
-          <button
-            onClick={handleClose}
-            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-2xl font-light transition-colors z-10"
-            aria-label="Close login"
-            type="button"
-          >
-            ×
-          </button>
-
+        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
           <div className="text-center">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,10 +136,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={() => handleOAuthLogin('Google')}
-              disabled={oauthLoading === 'Google'}
+              onClick={() => handleOAuthLogin('google')}
+              disabled={oauthLoading === 'google'}
             >
-              {oauthLoading === 'Google' ? (
+              {oauthLoading === 'google' ? (
                 <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
               ) : (
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -154,10 +155,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={() => handleOAuthLogin('Facebook')}
-              disabled={oauthLoading === 'Facebook'}
+              onClick={() => handleOAuthLogin('facebook')}
+              disabled={oauthLoading === 'facebook'}
             >
-              {oauthLoading === 'Facebook' ? (
+              {oauthLoading === 'facebook' ? (
                 <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
               ) : (
                 <svg className="w-5 h-5 text-[#1877F2]" viewBox="0 0 24 24" fill="currentColor">
@@ -170,10 +171,10 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <button
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50"
-              onClick={() => handleOAuthLogin('Apple')}
-              disabled={oauthLoading === 'Apple'}
+              onClick={() => handleOAuthLogin('apple')}
+              disabled={oauthLoading === 'apple'}
             >
-              {oauthLoading === 'Apple' ? (
+              {oauthLoading === 'apple' ? (
                 <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
               ) : (
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -233,7 +234,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             </div>
 
             {errors.submit && (
-              <div className="text-red-600 text-sm text-center bg-red-50 p-3 rounded-lg">
+              <div className="text-red-600 text-sm text-center">
                 {errors.submit}
               </div>
             )}
@@ -256,13 +257,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
           <div className="text-center text-sm mt-6 text-gray-600">
             Don't have an account?{" "}
-            <button
-              onClick={redirectToSignup}
-              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline cursor-pointer bg-transparent border-none p-0"
-              type="button"
-            >  
-              Sign Up
-            </button>
+            
+            <Link to="/signup" 
+            
+            className="text-blue-600 font-semibold hover:text-blue-700 hover:underline">  
+            Sign Up
+            </Link>
           </div>
         </div>
       </div>

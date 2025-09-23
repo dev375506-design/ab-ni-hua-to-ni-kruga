@@ -1,3 +1,25 @@
+// import { Button } from "@/components/ui/button";
+// import { Badge } from "@/components/ui/badge";
+// import { Card } from "@/components/ui/card";
+// import { Input } from "@/components/ui/input";
+// import ImgWithFallback from "@/components/ImgWithFallback";
+// import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+// import { useI18n } from "@/context/i18n";
+// import LoginModal from "@/components/LoginModal";
+// import PageTransition from "@/components/PageTransition";
+// import AnimatedSection from "@/components/AnimatedSection";
+// import AnimatedText from "@/components/AnimatedText";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// export default function Index() {
+//   const { t, lang, setLang } = useI18n();
+//   const [menuOpen, setMenuOpen] = useState(false);
+//   const [langOpen, setLangOpen] = useState(false);
+//   const [email, setEmail] = useState("");
+//   const [isLoginOpen, setIsLoginOpen] = useState(false);
+//   const [mounted, setMounted] = useState(false);
+//   const [isLoading, setIsLoading] = useState(true);
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -21,12 +43,10 @@ export default function Index() {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  
   useEffect(() => {
     setMounted(true);
     setIsLoading(false);
   }, []);
-
   const handleSubscribe = () => {
     if (!email || email.trim() === "") {
       alert("Please enter your email address");
@@ -52,12 +72,6 @@ export default function Index() {
     // Navigate to dashboard using proper routing
     window.location.href = "/dashboard";
   };
-
-  // Handle sign up button clicks
-  
-  const handleSignUpClick = () => {
-  setIsLoginOpen(true);
-};
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -87,7 +101,7 @@ export default function Index() {
           className="w-full py-4 px-6 lg:px-20 bg-intern-bg shadow fixed top-0 left-0 right-0 z-50"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5 }}
         >
           <div className="relative max-w-7xl mx-auto flex items-center justify-between">
             {/* Logo */}
@@ -117,16 +131,12 @@ export default function Index() {
               whileTap={{ scale: 0.9 }}
             >
               <motion.span
-              animate={{ 
-                rotateZ: menuOpen ? 45 : 0,
-                scale: menuOpen ? 0.9 : 1}}
+                animate={{ rotate: menuOpen ? 90 : 0 }}
                 transition={{ duration: 0.3 }}
-                >
-                  {menuOpen ? "✕" : "☰"}
-                  </motion.span>
+              >
+                ☰
+              </motion.span>
             </motion.button>
-            {/* why bro why...... */}
-
 
             {/* Desktop Menu */}
             <motion.div
@@ -149,7 +159,7 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.about")}
+                {t("nav.internships")}
               </motion.button>
               <motion.button 
                 onClick={() => scrollToSection("how-it-works")} 
@@ -165,10 +175,10 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                {t("nav.internships")}
+                {t("nav.about")}
               </motion.button>
               <motion.button
-                onClick={handleSignUpClick}
+                onClick={() => setIsLoginOpen(true)}
                 className="text-intern-text hover:text-intern-dark transition-colors font-poppins"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -253,18 +263,11 @@ export default function Index() {
                       >
                         <motion.button
                           className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
-                          onClick={() => { setLang("mr"); setLangOpen(false); }}
+                          onClick={() => setLangOpen(false)}
                           whileHover={{ x: 2 }}
                         >
                           मराठी (MR)
                         </motion.button>
-                      </motion.li>
-                      <motion.li
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15, duration: 0.2 }}
-                      >
-                       
                       </motion.li>
                     </motion.ul>
                   )}
@@ -272,23 +275,31 @@ export default function Index() {
               </div>
             </motion.div>
 
-            {/* Mobile right actions - Only Login button */}
+            {/* Mobile right actions */}
             <motion.div 
               className="lg:hidden flex items-center gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.3 }}
             >
-              <Link to="/login">
-                <motion.button
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-lg font-poppins"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  Login
-                </motion.button>
-              </Link>
+              <motion.button
+                onClick={() => setIsLoginOpen(true)}
+                className="text-intern-text hover:text-intern-dark"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                {t("nav.signup")}
+              </motion.button>
+              <motion.button
+                onClick={() => window.location.pathname = "/login"}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-lg font-poppins"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Login
+              </motion.button>
               <div className="relative">
                 <motion.button
                   type="button"
@@ -351,19 +362,6 @@ export default function Index() {
                           हिंदी (HI)
                         </motion.button>
                       </motion.li>
-                      <motion.li
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15, duration: 0.2 }}
-                      >
-                        <motion.button
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins"
-                          onClick={() => { setLang("mr"); setLangOpen(false); }}
-                          whileHover={{ x: 2 }}
-                        >
-                          मराठी (MR)
-                        </motion.button>
-                      </motion.li>
                     </motion.ul>
                   )}
                 </AnimatePresence>
@@ -371,21 +369,21 @@ export default function Index() {
             </motion.div>
           </div>
 
-          {/* Mobile Menu (hamburger content) - Sign Up is here */}
+          {/* Mobile Menu (only visible when menuOpen = true) */}
           <AnimatePresence>
             {menuOpen && (
               <motion.div 
                 className="lg:hidden fixed inset-x-0 top-[60px] z-50"
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.05 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.1 }}
               >
                 <motion.div 
                   className="mx-4 mt-3 flex flex-col gap-3 px-6 py-4 bg-intern-bg rounded shadow"
-                  initial={{ opacity: 0, scale: 0.98 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <motion.button 
                     className="text-intern-text text-left" 
@@ -427,25 +425,12 @@ export default function Index() {
                   >
                     {t("nav.internships")}
                   </motion.button>
-                  {/* Sign Up in mobile hamburger menu */}
-                  <motion.button
-                    className="text-intern-text text-left font-medium"
-                    onClick={() => { 
-                      setMenuOpen(false); 
-                      handleSignUpClick(); 
-                    }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5, duration: 0.2 }}
-                    whileHover={{ x: 5 }}
-                  >
-                    Sign Up
-                  </motion.button>
                 </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.nav>
+
         {/* Hero Section */}
         <section id="hero" className="relative pt-24 pb-16 px-6 lg:px-20 mt-10">
           {/* Background image behind hero */}
@@ -465,7 +450,7 @@ export default function Index() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.5 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                 >
                   <Badge className="bg-transparent border-none p-0 text-lg lg:text-xl font-bold text-orange-600 uppercase">
                     {t("hero.tag")}
@@ -475,26 +460,26 @@ export default function Index() {
                   <AnimatedText
                     text={t("hero.title1")}
                     tag="h1"
-                    delay={0.2}
+                    delay={0.7}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                   <AnimatedText
                     text={t("hero.title2")}
                     tag="h1"
-                    delay={0.4}
+                    delay={0.9}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                   <AnimatedText
                     text={t("hero.title3")}
                     tag="h1"
-                    delay={0.3}
+                    delay={1.1}
                     className="text-3xl lg:text-6xl xl:text-7xl font-bold font-volkhov leading-tight text-intern-primary"
                   />
                 </div>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
+                  transition={{ delay: 1.3, duration: 0.5 }}
                   className="text-lg lg:text-xl text-intern-text font-poppins max-w-md leading-relaxed"
                 >
                   {t("hero.desc")}
@@ -503,7 +488,7 @@ export default function Index() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
               >
                 <Button
                   asChild
@@ -532,9 +517,9 @@ export default function Index() {
             <div className="relative" />
           </div>
           {/* Trust Indicators */}
-          <AnimatedSection delay={0.2} className="mt-16 max-w-7xl mx-auto">
+          <AnimatedSection delay={1.8} className="mt-16 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-              <AnimatedSection delay={0.1} className="space-y-2">
+              <AnimatedSection delay={2.0} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -549,7 +534,7 @@ export default function Index() {
                     Trusted Partners
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={0.2} className="space-y-2">
+                <AnimatedSection delay={2.2} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M8 6a3 3 0 0 0-3 3v1a3 3 0 0 0 0 6h1" />
@@ -564,7 +549,7 @@ export default function Index() {
                     Smart Matching
                   </h3>
                 </AnimatedSection>
-                <AnimatedSection delay={0.3} className="space-y-2">
+                <AnimatedSection delay={2.4} className="space-y-2">
                   <div className="w-20 h-20 mx-auto bg-intern-green rounded-full flex items-center justify-center transition-transform hover:scale-105">
                     <svg viewBox="0 0 24 24" className="w-12 h-12 text-intern-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M8 21l4-8 4 8" />
@@ -602,13 +587,10 @@ export default function Index() {
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <ImgWithFallback
-                    src="/create-profile.svg"
-                    fallback="/placeholder.svg"
-                    alt="Create Your Profile"
-                    className="w-16 h-16 object-contain mb-4"
-                    loading="eager"
-                  />
+                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21v-2a7 7 0 0 0-14 0v2" />
+                  </svg>
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Tell us about your education, skills, and interests in
@@ -644,17 +626,17 @@ export default function Index() {
                   Start Your Journey
                 </h4>
           </AnimatedSection>
-            <AnimatedSection delay={0.2} className="text-center space-y-6 group">
+            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <ImgWithFallback
-                    src="/ai-matches.svg"
-                    fallback="/placeholder.svg"
-                    alt="AI Finds Matches"
-                    className="w-16 h-16 object-contain mb-4"
-                    loading="eager"
-                  />
+                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 .553-.894L9 2" />
+                    <path d="M15 4l5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-.553.894L15 22" />
+                    <path d="M9 12V2" />
+                    <path d="M15 12V2" />
+                    <path d="M9 12a3 3 0 0 0 6 0" />
+                  </svg>
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Get personalized recommendations and apply to internships
@@ -668,17 +650,16 @@ export default function Index() {
               </h4>
             </AnimatedSection>
             {/* Step 3 */}
-            <AnimatedSection delay={0.3} className="text-center space-y-6 group">
+            <AnimatedSection delay={0.4} className="text-center space-y-6 group">
               <div className="relative mx-auto w-48 h-48 transition-transform duration-300 group-hover:-translate-y-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl transition group-hover:shadow-2xl"></div>
                 <div className="relative p-8 flex flex-col items-center justify-center h-full">
-                  <ImgWithFallback
-                    src="/review-apply.svg"
-                    fallback="/placeholder.svg"
-                    alt="Review and Apply"
-                    className="w-16 h-16 object-contain mb-4"
-                    loading="eager"
-                  />
+                  <svg viewBox="0 0 24 24" className="w-16 h-16 text-intern-dark mb-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 12h.01" />
+                    <path d="M12 12h.01" />
+                    <path d="M16 12h.01" />
+                  </svg>
                   <div className="space-y-2 text-center">
                     <p className="text-intern-text font-poppins text-sm leading-relaxed">
                       Get personalized recommendations and apply to internships
@@ -1331,11 +1312,9 @@ export default function Index() {
           </div>
         </div>
       </footer>
-      <LoginModal 
-          isOpen={isLoginOpen} 
-          onClose={() => setIsLoginOpen(false)} 
-          onSuccess={handleAuthSuccess} 
-        />
+
+      {/* Login modal */}
+        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onSuccess={handleAuthSuccess} />
       </main>
     </PageTransition>
   );

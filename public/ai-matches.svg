@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <path d="M30 85L10 75a5 5 0 0 1-2.5-4.5V30a5 5 0 0 1 2.5-4.5L30 15" stroke="#3B82F6" stroke-width="6" fill="none"/>
-  <path d="M70 15l20 10a5 5 0 0 1 2.5 4.5v40a5 5 0 0 1-2.5 4.5L70 85" stroke="#3B82F6" stroke-width="6" fill="none"/>
-  <path d="M30 50V15" stroke="#3B82F6" stroke-width="6" fill="none"/>
-  <path d="M70 50V15" stroke="#3B82F6" stroke-width="6" fill="none"/>
-  <path d="M30 50a20 20 0 0 0 40 0" stroke="#3B82F6" stroke-width="6" fill="none"/>
-</svg>
