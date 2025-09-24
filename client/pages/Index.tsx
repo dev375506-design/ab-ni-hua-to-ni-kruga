@@ -124,7 +124,7 @@ export default function Index() {
               transition={{ duration: 0.3 }}
               className="cursor-pointer text-2xl"
               >
-                {menuOpen ? "✕" : "☰"}
+                {menuOpen ? "✕  " : "☰"}
                 </motion.span>
             </motion.button>
 
