@@ -1307,8 +1307,12 @@ export default function Index() {
         </div>
       </footer>
 
-      {/* Login modal */}
-        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onSuccess={handleAuthSuccess} />
+      <LoginModal 
+          isOpen={isLoginOpen}
+          onClose={() => setIsLoginOpen(false)}
+          onSuccess={handleAuthSuccess}
+        />
+
       </main>
     </PageTransition>
   );
