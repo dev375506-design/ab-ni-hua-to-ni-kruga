@@ -161,14 +161,14 @@ export default function Dashboard() {
                     <Link 
                       key={item.label} 
                       to={item.href} 
-                      className="group px-3 py-2.5 rounded-lg hover:bg-gray-100 text-intern-dark font-poppins transition-all duration-200 border border-transparent hover:border-gray-200 hover:shadow-sm"
+                      className="group px-3 py-2.5 rounded-lg hover:bg-gray-100 text-intern-dark font-poppins transition-all duration-200 border border-transparent hover:border-gray-200 hover:shadow-sm flex items-center min-h-[44px] sm:min-h-[48px]"
                       title={item.description}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-base">{item.icon}</span>
+                      <div className="flex items-center gap-3 w-full">
+                        <span className="w-6 text-lg shrink-0 leading-none text-center">{item.icon}</span>
                         <div className="flex-1">
-                          <div className="font-medium text-sm">{item.label}</div>
-                          <div className="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <div className="font-medium text-sm leading-tight truncate">{item.label}</div>
+                          <div className="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 line-clamp-1">
                             {item.description}
                           </div>
                         </div>

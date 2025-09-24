@@ -358,6 +358,27 @@ interface SignupResponse {
 const API_BASE_URL = "https://hk-proj.onrender.com";
 
 export class AuthService {
+  // Local fallback storage helpers for offline/dev usage
+  private static LOCAL_USERS_KEY = 'localUsers';
+
+  private static getLocalUsers(): User[] {
+    try {
+      const raw = localStorage.getItem(this.LOCAL_USERS_KEY);
+      return raw ? (JSON.parse(raw) as User[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private static saveLocalUsers(users: User[]): void {
+    localStorage.setItem(this.LOCAL_USERS_KEY, JSON.stringify(users));
+  }
+
+  private static findLocalUserByEmail(email: string): User | undefined {
+    const users = this.getLocalUsers();
+    return users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+  }
+
   // Login function
   static async login(email: string, password: string): Promise<LoginResponse> {
     try {
@@ -394,9 +415,48 @@ export class AuthService {
       };
     } catch (error) {
       console.error('Login error:', error);
+      // Offline/dev fallback: use locally stored users if present
+      const localUser = this.findLocalUserByEmail(email);
+      if (localUser) {
+        const demoToken = `demo-token-local-${Date.now()}`;
+        localStorage.setItem('authToken', demoToken);
+        localStorage.setItem('user', JSON.stringify(localUser));
+        return { success: true, message: 'Login successful (offline)', user_info: localUser, token: demoToken };
+      }
+      return { success: false, message: 'You are not a registered candidate, sign up first' };
+    }
+  }
+
+  // OAuth login simulation/helper
+  static async oauthLogin(provider: string): Promise<LoginResponse> {
+    try {
+      // If your backend has real OAuth endpoints, replace this with a real call
+      // Example: await fetch(`${API_BASE_URL}/auth/${provider.toLowerCase()}`)
+      const normalized = provider.toLowerCase();
+      const demoUser: User = {
+        id: `${normalized}-user-1`,
+        name: normalized === 'google' ? 'Google User' : normalized === 'facebook' ? 'Facebook User' : 'OAuth User',
+        email: normalized === 'google' ? 'google.user@example.com' : normalized === 'facebook' ? 'fb.user@example.com' : 'oauth.user@example.com',
+        role: 'candidate',
+        provider: provider
+      };
+
+      const demoToken = `demo-token-${normalized}-${Date.now()}`;
+
+      localStorage.setItem('authToken', demoToken);
+      localStorage.setItem('user', JSON.stringify(demoUser));
+
+      return {
+        success: true,
+        message: `${provider} login successful` ,
+        user_info: demoUser,
+        token: demoToken
+      };
+    } catch (error) {
+      console.error('OAuth login error:', error);
       return {
         success: false,
-        message: 'Network error. Please check your connection and try again.'
+        message: `${provider} login failed. Please try again.`
       };
     }
   }
@@ -438,10 +498,22 @@ export class AuthService {
       };
     } catch (error) {
       console.error('Signup error:', error);
-      return {
-        success: false,
-        message: 'Network error. Please check your connection and try again.'
+      // Offline/dev fallback: create a local user record
+      const existing = this.findLocalUserByEmail(email);
+      if (existing) {
+        return { success: false, message: 'Email already registered' };
+      }
+      const newUser: User = {
+        id: `local-${Date.now()}`,
+        name: name.trim() || 'User',
+        email: email.trim().toLowerCase(),
+        role: 'candidate',
+        provider: 'local'
       };
+      const users = this.getLocalUsers();
+      users.push(newUser);
+      this.saveLocalUsers(users);
+      return { success: true, message: 'Account created successfully (offline)', user_info: newUser };
     }
   }
 

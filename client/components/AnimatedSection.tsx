@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 type AnimatedSectionProps = {
   children: ReactNode;
@@ -16,6 +16,7 @@ const AnimatedSection = ({
   className = '',
   duration = 0.5,
 }: AnimatedSectionProps) => {
+  const prefersReducedMotion = useReducedMotion();
   const getDirectionVariants = () => {
     switch (direction) {
       case 'up':
@@ -33,11 +34,12 @@ const AnimatedSection = ({
 
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: duration, delay: delay }}
-      variants={getDirectionVariants()}
+      initial={prefersReducedMotion ? undefined : 'hidden'}
+      whileInView={prefersReducedMotion ? undefined : 'visible'}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={prefersReducedMotion ? undefined : { duration: Math.min(duration, 0.35), delay: Math.min(delay, 0.2), ease: 'easeOut' }}
+      variants={prefersReducedMotion ? undefined : getDirectionVariants()}
+      style={{ willChange: prefersReducedMotion ? undefined as any : 'transform, opacity' }}
       className={className}
     >
       {children}

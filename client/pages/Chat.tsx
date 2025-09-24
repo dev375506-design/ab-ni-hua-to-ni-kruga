@@ -137,7 +137,7 @@ export default function Chat() {
                 <p className="text-intern-dark font-poppins leading-relaxed">
                   👋 Hi, I’m your Internमित्र AI Bot! I’ll help you find the perfect internship based on your skills, interests, and location. Let’s get started! 🚀
                 </p>
-                <div className="mx-auto w-56 h-56 sm:w-72 sm:h-72 opacity-80">
+                <div className="mx-auto w-56 h-56 sm:w-72 sm:h-68 opacity-80">
                   <svg viewBox="0 0 200 200" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                     <rect x="30" y="70" width="140" height="100" rx="28" fill="#e5edf9"></rect>
                     <rect x="55" y="95" width="90" height="50" rx="16" fill="#ffffff"></rect>

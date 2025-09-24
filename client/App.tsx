@@ -234,6 +234,7 @@ import SavedInternships from "./pages/SavedInternships";
 import RecommendedInternships from "./pages/RecommendedInternships";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Login from "./pages/Login";
+import LoginModal from "./components/LoginModal";
 import Signup from "./pages/Signup";
 import { LanguageProvider } from "./context/i18n";
 
@@ -386,14 +387,21 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               
-              {/* Authentication routes - redirect if already logged in */}
+              {/* Authentication route: render overlay modal on top of Index */}
               <Route 
                 path="/login" 
                 element={
                   user ? (
                     <Navigate to="/dashboard" replace />
                   ) : (
-                    <Login onLoginSuccess={handleLoginSuccess} />
+                    <>
+                      <Index />
+                      <LoginModal 
+                        isOpen={true}
+                        onClose={() => { window.history.length > 1 ? window.history.back() : (window.location.href = '/'); }}
+                        onSuccess={handleLoginSuccess}
+                      />
+                    </>
                   )
                 } 
               />
