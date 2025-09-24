@@ -361,20 +361,21 @@ export class AuthService {
   // Local fallback storage helpers for offline/dev usage
   private static LOCAL_USERS_KEY = 'localUsers';
 
-  private static getLocalUsers(): User[] {
+  // Local user record includes password for offline-only usage
+  private static getLocalUsers(): Array<User & { password: string }> {
     try {
       const raw = localStorage.getItem(this.LOCAL_USERS_KEY);
-      return raw ? (JSON.parse(raw) as User[]) : [];
+      return raw ? (JSON.parse(raw) as Array<User & { password: string }>) : [];
     } catch {
       return [];
     }
   }
 
-  private static saveLocalUsers(users: User[]): void {
+  private static saveLocalUsers(users: Array<User & { password: string }>): void {
     localStorage.setItem(this.LOCAL_USERS_KEY, JSON.stringify(users));
   }
 
-  private static findLocalUserByEmail(email: string): User | undefined {
+  private static findLocalUserByEmail(email: string): (User & { password: string }) | undefined {
     const users = this.getLocalUsers();
     return users.find(u => u.email?.toLowerCase() === email.toLowerCase());
   }
@@ -417,13 +418,18 @@ export class AuthService {
       console.error('Login error:', error);
       // Offline/dev fallback: use locally stored users if present
       const localUser = this.findLocalUserByEmail(email);
-      if (localUser) {
-        const demoToken = `demo-token-local-${Date.now()}`;
-        localStorage.setItem('authToken', demoToken);
-        localStorage.setItem('user', JSON.stringify(localUser));
-        return { success: true, message: 'Login successful (offline)', user_info: localUser, token: demoToken };
+      if (!localUser) {
+        return { success: false, message: 'You are not a registered candidate, sign up first' };
       }
-      return { success: false, message: 'You are not a registered candidate, sign up first' };
+      if (password !== localUser.password) {
+        return { success: false, message: 'Incorrect password' };
+      }
+      const demoToken = `demo-token-local-${Date.now()}`;
+      localStorage.setItem('authToken', demoToken);
+      // Strip password before saving to user store
+      const { password: _pw, ...safeUser } = localUser;
+      localStorage.setItem('user', JSON.stringify(safeUser));
+      return { success: true, message: 'Login successful (offline)', user_info: safeUser as User, token: demoToken };
     }
   }
 
@@ -503,17 +509,20 @@ export class AuthService {
       if (existing) {
         return { success: false, message: 'Email already registered' };
       }
-      const newUser: User = {
+      const newUser = {
         id: `local-${Date.now()}`,
         name: name.trim() || 'User',
         email: email.trim().toLowerCase(),
         role: 'candidate',
-        provider: 'local'
-      };
+        provider: 'local',
+        password: password
+      } as User & { password: string };
       const users = this.getLocalUsers();
       users.push(newUser);
       this.saveLocalUsers(users);
-      return { success: true, message: 'Account created successfully (offline)', user_info: newUser };
+      // Do not auto-login in offline fallback; require explicit login
+      const { password: _pw, ...safeUser } = newUser;
+      return { success: true, message: 'Account created successfully (offline). Please sign in.', user_info: safeUser as User };
     }
   }
 
