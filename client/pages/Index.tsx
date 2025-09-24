@@ -110,12 +110,22 @@ export default function Index() {
               transition={{ delay: 0.3, duration: 0.3 }}
               whileTap={{ scale: 0.9 }}
             >
-              <motion.span
+              {/* <motion.span
                 animate={{ rotate: menuOpen ? 90 : 0 }}
                 transition={{ duration: 0.3 }}
               >
                 ☰
-              </motion.span>
+              </motion.span> */}
+              
+
+              <motion.span
+              onClick={() => setMenuOpen(!menuOpen)}
+              animate={{ rotate: menuOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="cursor-pointer text-2xl"
+              >
+                {menuOpen ? "✕" : "☰"}
+                </motion.span>
             </motion.button>
 
             {/* Desktop Menu */}
