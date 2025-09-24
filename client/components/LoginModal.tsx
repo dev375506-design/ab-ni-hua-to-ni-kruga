@@ -466,6 +466,7 @@ interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (userData: User) => void;
+  defaultSignUp?: boolean;
 }
 
 interface FormData {
@@ -475,11 +476,11 @@ interface FormData {
   name: string;
 }
 
-export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, onSuccess, defaultSignUp = false }: LoginModalProps) {
   const navigate = useNavigate();
   const [response, setResponse] = useState('');
   const [showSignupCTA, setShowSignupCTA] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(defaultSignUp);
   const [isLoading, setIsLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -491,6 +492,12 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   if (!isOpen) return null;
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsSignUp(defaultSignUp);
+    }
+  }, [isOpen, defaultSignUp]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -645,6 +652,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
     setShowSignupCTA(false);
     
     try {
+      if (provider.toLowerCase() === 'apple') {
+        setResponse('Apple login is not available right now. Please use Google or Facebook.');
+        return;
+      }
       const result = await AuthService.oauthLogin(provider);
       
       if (result.success && result.user_info) {
